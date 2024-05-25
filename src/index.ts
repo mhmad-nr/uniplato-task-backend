@@ -1,19 +1,26 @@
-import Fastify from 'fastify';
+import fastify from "fastify";
+import userRouter from "./routes/user.router";
+import { API_PORT } from "./config";
 
-const fastify = Fastify({ logger: true });
-
-fastify.get('/', async (request, reply) => {
-  return { hello: 'world' };
-});
-
-const start = async () => {
+const startServer = async () => {
   try {
-    await fastify.listen(3000);
-    fastify.log.info(`Server is running on http://localhost:3000`);
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
+    const server = fastify({
+      logger: true,
+    });
+
+    server.register(userRouter, { prefix: "/api/user" });
+    server.setErrorHandler((error, request, reply) => {
+      server.log.error(error);
+    });
+    await server.listen(API_PORT);
+  } catch (e) {
+    console.error(e);
   }
 };
 
-start();
+process.on("unhandledRejection", (e) => {
+  console.error(e);
+  process.exit(1);
+});
+
+startServer();

@@ -6,22 +6,29 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/server.js",
-    "dev": "ts-node src/index.ts"
+    "dev": "ts-node-dev src/index.ts"
   },
   "keywords": [],
   "author": "mohammad norouzi",
   "license": "ISC",
   "homepage": "https://github.com/mhmad-nr/uniplato-task-backend",
   "dependencies": {
-    "fastify": "^3.28.0"
+    "@prisma/client": "^5.14.0",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.27.0",
+    "fluent-json-schema": "^4.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.9.7"
   },
   "devDependencies": {
-    "@types/node": "17.0.25",
-    "@types/nodemon": "1.19.1",
-    "nodemon": "2.0.15",
-    "tap": "16.0.1",
-    "ts-node": "10.7.0",
-    "ts-node-dev": "^1.1.8",
-    "typescript": "4.6.3"
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/node": "20.12.12",
+    "@types/nodemon": "1.19.6",
+    "nodemon": "3.1.1",
+    "prisma": "^5.14.0",
+    "tap": "19.0.1",
+    "ts-node": "10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "5.4.5"
   }
 }

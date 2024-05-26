@@ -1,46 +1,42 @@
 import { Type } from "@sinclair/typebox";
+ export const user = Type.Object({
+  id: Type.Number(),
+  username: Type.String(),
+  email: Type.String({
+    format: "email",
+  }),
+  created_at: Type.String(),
+});
 
-const create = {
+const updateUserName = {
   body: Type.Object(
     {
       username: Type.String(),
-      email: Type.String({
-        format: "email",
-      }),
-      password: Type.String({
-        format: "password",
-        minLength: 8,
-      }),
     },
     {
       additionalProperties: false,
     }
   ),
+
+  response: {
+    "200": Type.Object({
+      data: user,
+    }),
+  },
 };
-const update = {
-  body: Type.Object(
-    {
-      username: Type.Optional(Type.String()),
-      password: Type.Optional(
-        Type.String({
-          minLength: 8,
-        })
-      ),
-    },
-    {
-      additionalProperties: false,
-    }
-  ),
+
+const userById = {
   params: Type.Object({
     id: Type.Number(),
   }),
+  response: {
+    "200": Type.Object({
+      data: user,
+    }),
+  },
 };
-const byId = {
-  params: Type.Object({
-    id: Type.Number(),
-  }),
-};
-const queryParams = {
+
+const users = {
   querystring: Type.Object({
     limit: Type.Optional(
       Type.Integer({
@@ -55,9 +51,18 @@ const queryParams = {
         default: 0,
       })
     ),
-    sortBy: Type.Optional(Type.String({ enum: ["username", "createdAt"] })),
+    sortBy: Type.Optional(Type.String({ enum: ["username", "created_at"] })),
     sortOrder: Type.Optional(Type.String({ enum: ["asc", "desc"] })),
   }),
+  response: {
+    "200": Type.Object({
+      data: Type.Array(user),
+    }),
+  },
 };
 
-export const userSchema = { create, byId, update ,queryParams };
+export const userSchema = {
+  userById,
+  updateUserName,
+  users,
+};

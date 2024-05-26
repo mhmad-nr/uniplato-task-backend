@@ -1,5 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import * as bcrypt from "bcryptjs";
+import { JWT_SECRET } from "../config";
+import * as JWT from "jsonwebtoken";
+import { JwtPayload } from "../payload";
 
 export const prisma = new PrismaClient();
 
@@ -26,7 +29,7 @@ export const utils = {
       });
     });
   },
-  compareHash: (hash, value) => {
+  compareHash: (hash: string, value: string) => {
     return new Promise((resolve, reject) => {
       bcrypt.compare(value, hash, (err, result): boolean | any => {
         if (err) reject(err);
@@ -45,4 +48,11 @@ export const utils = {
         });
     });
   },
+  getJWT: ({ email }: JwtPayload) =>
+    JWT.sign(
+      {
+        email,
+      },
+      JWT_SECRET
+    ),
 };

@@ -1,27 +1,19 @@
 import { FastifyInstance } from "fastify";
 import { UserController } from "../controller";
 import { userSchema } from "../schema";
-import {
-  FormatRegistry,
-  TypeBoxTypeProvider,
-  TypeBoxValidatorCompiler,
-} from "@fastify/type-provider-typebox";
-import { isEmail, isStrongPassword } from "class-validator";
+import { checkValidRequest, checkValidUser } from "../helpers/auth";
 
 async function userRouter(fastify: FastifyInstance) {
   fastify.decorateRequest("authUser", "");
-  fastify.setValidatorCompiler(TypeBoxValidatorCompiler);
-  fastify.withTypeProvider<TypeBoxTypeProvider>();
+
   const userController = new UserController();
-
-  FormatRegistry.Set("email", (value) => isEmail(value));
-  FormatRegistry.Set("password", (value) => isStrongPassword(value));
-
   // Route to get all users
+
   fastify.route({
     method: "GET",
     url: "/",
-    schema: userSchema.queryParams,
+    schema: userSchema.users,
+    preHandler: [checkValidRequest],
     handler: userController.getAllUsers,
   });
 
@@ -29,33 +21,36 @@ async function userRouter(fastify: FastifyInstance) {
   fastify.route({
     method: "GET",
     url: "/:id",
-    schema: userSchema.byId,
+    schema: userSchema.userById,
+    preHandler: [checkValidRequest],
     handler: userController.getUserById,
   });
 
-  // Route to create a new user
-  fastify.route({
-    method: "POST",
-    url: "/",
-    schema: userSchema.create,
-    handler: userController.createUser,
-  });
-
-  // Route to update a user by ID
   fastify.route({
     method: "PUT",
-    url: "/:id",
-    schema: userSchema.update,
-    handler: userController.updateUser,
+    url: "/user-name",
+    schema: userSchema.updateUserName,
+    preHandler: [checkValidRequest, checkValidUser],
+    handler: userController.updateUserName,
   });
+
+  // // Route to update a user by ID
+  // fastify.route({
+  //   method: "PUT",
+  //   url: "/:id",
+  //   schema: userSchema.update,
+  //   preHandler: [checkValidRequest],
+  //   handler: userController.updateUser,
+  // });
 
   // Route to delete a user by ID
   fastify.route({
     method: "DELETE",
     url: "/:id",
-    schema: userSchema.byId,
+    schema: userSchema.userById,
+    preHandler: [checkValidRequest],
     handler: userController.deleteUser,
   });
 }
 
-export default userRouter;
+export { userRouter };

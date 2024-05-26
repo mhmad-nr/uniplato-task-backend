@@ -1,8 +1,20 @@
 import { FastifyRequest } from "fastify";
 import { Prisma } from "@prisma/client";
 
-export interface IUserRequest extends FastifyRequest {
+export interface IUserCreateRequest extends FastifyRequest {
   body: Prisma.usersCreateInput;
+  params: IID;
+}
+export interface IUserGetRequest extends FastifyRequest {
+  query: {
+    offset?: string;
+    limit?: string;
+    sortBy: "username" | "created_at" | undefined;
+    sortOrder: "asc" | "desc" | undefined;
+  };
+}
+export interface IUserUpdateRequest extends FastifyRequest {
+  body: Prisma.usersUpdateInput;
   params: IID;
 }
 export interface IParam<T> {

@@ -1,17 +1,27 @@
 import { FastifyInstance } from "fastify";
 import { UserController } from "../controller";
-import S from "fluent-json-schema";
-import { userByIdSchema } from "../schema";
+import { userSchema } from "../schema";
+import {
+  FormatRegistry,
+  TypeBoxTypeProvider,
+  TypeBoxValidatorCompiler,
+} from "@fastify/type-provider-typebox";
+import { isEmail, isStrongPassword } from "class-validator";
 
 async function userRouter(fastify: FastifyInstance) {
   fastify.decorateRequest("authUser", "");
+  fastify.setValidatorCompiler(TypeBoxValidatorCompiler);
+  fastify.withTypeProvider<TypeBoxTypeProvider>();
   const userController = new UserController();
+
+  FormatRegistry.Set("email", (value) => isEmail(value));
+  FormatRegistry.Set("password", (value) => isStrongPassword(value));
 
   // Route to get all users
   fastify.route({
     method: "GET",
     url: "/",
-
+    schema: userSchema.queryParams,
     handler: userController.getAllUsers,
   });
 
@@ -19,6 +29,7 @@ async function userRouter(fastify: FastifyInstance) {
   fastify.route({
     method: "GET",
     url: "/:id",
+    schema: userSchema.byId,
     handler: userController.getUserById,
   });
 
@@ -26,6 +37,7 @@ async function userRouter(fastify: FastifyInstance) {
   fastify.route({
     method: "POST",
     url: "/",
+    schema: userSchema.create,
     handler: userController.createUser,
   });
 
@@ -33,6 +45,7 @@ async function userRouter(fastify: FastifyInstance) {
   fastify.route({
     method: "PUT",
     url: "/:id",
+    schema: userSchema.update,
     handler: userController.updateUser,
   });
 
@@ -40,9 +53,7 @@ async function userRouter(fastify: FastifyInstance) {
   fastify.route({
     method: "DELETE",
     url: "/:id",
-    schema: {
-      body: S.null(),
-    },
+    schema: userSchema.byId,
     handler: userController.deleteUser,
   });
 }

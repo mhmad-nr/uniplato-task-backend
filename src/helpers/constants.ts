@@ -3,6 +3,7 @@ export const STANDARD = {
   SUCCESS: 200,
   NOCONTENT: 204,
 }
+export const passwordRegex = "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/"
 
 export const ERROR404 = {
   statusCode: 404,

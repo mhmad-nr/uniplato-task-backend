@@ -2,8 +2,14 @@ import { FastifyRequest } from "fastify";
 import { Prisma } from "@prisma/client";
 
 export interface IUserCreateRequest extends FastifyRequest {
-  body: Prisma.usersCreateInput;
+  body: Prisma.UserCreateInput;
   params: IID;
+}
+export interface ILoginRequest extends FastifyRequest {
+  body: {
+    email: string;
+    password: string;
+  };
 }
 export interface IUserGetRequest extends FastifyRequest {
   query: {
@@ -14,7 +20,7 @@ export interface IUserGetRequest extends FastifyRequest {
   };
 }
 export interface IUserUpdateRequest extends FastifyRequest {
-  body: Prisma.usersUpdateInput;
+  body: Prisma.UserUpdateInput;
   params: IID;
 }
 export interface IParam<T> {

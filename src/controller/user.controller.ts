@@ -26,7 +26,7 @@ export class UserController {
         orderBy: sortBy ? { [sortBy]: sortOrder } : undefined,
       };
 
-      const users = await prisma.users.findMany(usersQuery);
+      const users = await prisma.user.findMany(usersQuery);
       reply.code(STANDARD.SUCCESS).send({ users });
     } catch (err) {
       handleServerError(reply, err);
@@ -36,7 +36,7 @@ export class UserController {
     try {
       const { id } = request.params;
 
-      const user = await prisma.users.findUnique({
+      const user = await prisma.user.findUnique({
         where: { id: parseInt(id, 10) },
       });
 
@@ -63,7 +63,7 @@ export class UserController {
         return;
       }
 
-      const newUser = await prisma.users.create({
+      const newUser = await prisma.user.create({
         data: {
           username,
           email,
@@ -84,7 +84,7 @@ export class UserController {
       const userDto = plainToInstance(UpdateUserDto, request.body);
       const { username, email } = userDto;
 
-      const updatedUser = await prisma.users.update({
+      const updatedUser = await prisma.user.update({
         where: { id: parseInt(id, 10) },
         data: {
           username,
@@ -107,7 +107,7 @@ export class UserController {
   async deleteUser(request: IParam<IID>, reply: FastifyReply) {
     try {
       const { id } = request.params;
-      const deletedUser = await prisma.users.delete({
+      const deletedUser = await prisma.user.delete({
         where: { id: parseInt(id, 10) },
       });
 

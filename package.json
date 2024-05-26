@@ -13,6 +13,8 @@
   "license": "ISC",
   "homepage": "https://github.com/mhmad-nr/uniplato-task-backend",
   "dependencies": {
+    "@fastify/swagger": "^8.14.0",
+    "@fastify/swagger-ui": "^3.0.0",
     "@fastify/type-provider-typebox": "^4.0.0",
     "@prisma/client": "^5.14.0",
     "@sinclair/typebox": "^0.32.31",

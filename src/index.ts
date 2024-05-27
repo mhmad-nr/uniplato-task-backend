@@ -13,14 +13,6 @@ const startServer = async () => {
     const server = fastify({
       logger: true,
     });
-
-    
-    server.setValidatorCompiler(TypeBoxValidatorCompiler);
-    FormatRegistry.Set("email", (value) => isEmail(value));
-    FormatRegistry.Set("password", (value) => isStrongPassword(value));
-    
-    server.withTypeProvider<TypeBoxTypeProvider>();
-
     // Register Swagger
     server.register(fastifySwagger, {
       mode: 'static',
@@ -30,6 +22,14 @@ const startServer = async () => {
         baseDir: __dirname,
       },
     });
+
+    server.setValidatorCompiler(TypeBoxValidatorCompiler);
+    FormatRegistry.Set("email", (value) => isEmail(value));
+    FormatRegistry.Set("password", (value) => isStrongPassword(value));
+
+    server.withTypeProvider<TypeBoxTypeProvider>();
+
+
 
     server.register(fastifySwaggerUi, {
       routePrefix: '/documentation',
@@ -54,6 +54,8 @@ const startServer = async () => {
       }
       server.log.error(error);
     });
+
+
     await server.listen(API_PORT);
   } catch (e) {
     console.error(e);

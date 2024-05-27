@@ -4,7 +4,7 @@ import { ERROR400, ERROR401, ERROR403 } from "./constants";
 import * as JWT from "jsonwebtoken";
 import { JWT_SECRET } from "../config";
 import { IUserRequest } from "../interfaces";
-import { JwtPayload } from "../payload";
+import { JwtPayload } from "../interfaces";
 import { blacklist } from "./blacklist";
 
 

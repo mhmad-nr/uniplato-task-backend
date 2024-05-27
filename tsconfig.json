@@ -1,23 +1,13 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "declaration": true,
-        "removeComments": true,
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "target": "ES2021",
-        "skipLibCheck": true,
-        "emitDeclarationOnly": true,
-        "allowImportingTsExtensions": true,
-        "strictNullChecks": false,
-        "resolveJsonModule": true,
-        "esModuleInterop": true,
-        "strictBindCallApply": false,
-        "forceConsistentCasingInFileNames": false,
-        "noFallthroughCasesInSwitch": false,
         "lib": [
             "es2020"
         ],
+        "module": "commonjs",
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "target": "es2020",
+        "esModuleInterop": true,
         "allowSyntheticDefaultImports": true,
         "incremental": true,
         "noImplicitAny": false,

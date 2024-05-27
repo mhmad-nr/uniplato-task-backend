@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import fastify from "fastify";
 import { authRouter, userRouter } from "./routes";
 import { API_PORT } from "./config";

@@ -43,3 +43,7 @@ export interface IParam<T> {
 export interface IID {
   id?: string;
 }
+
+export interface JwtPayload {
+  email: string
+}

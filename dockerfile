@@ -19,8 +19,15 @@ COPY prisma ./prisma
 # Generate Prisma client
 RUN yarn prisma generate
 
-# Compile TypeScript
+# Clean the previous build
+RUN yarn run clean
+
+
+# Build the project
 RUN yarn run build
+
+# Start the project
+RUN yarn run start
 
 # Expose the port the app runs on
 EXPOSE 3000

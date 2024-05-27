@@ -1,11 +1,10 @@
-import { FastifyInstance } from "fastify";
-import { AuthController } from "../controller";
 import { authSchema } from "../schema";
 import { checkValidRequest, checkValidUser } from "../helpers/auth";
+import { IServerController } from "../interfaces";
 
-async function authRouter(fastify: FastifyInstance) {
+async function authRouter(fastify: IServerController) {
+  const authController = fastify.authController
   fastify.decorateRequest("authUser", "");
-  const authController = new AuthController();
 
   fastify.route({
     method: "POST",
@@ -28,6 +27,15 @@ async function authRouter(fastify: FastifyInstance) {
     preHandler: [checkValidRequest, checkValidUser],
     handler: authController.changePassword,
   });
+  
+  fastify.route({
+    method: "POST",
+    url: "/logout",
+    schema: authSchema.logout,
+    preHandler: [checkValidRequest, checkValidUser],
+    handler: authController.logout,
+  });
+
 }
 
 export { authRouter };

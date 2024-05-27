@@ -1,12 +1,13 @@
-import { FastifyInstance } from "fastify";
 import { UserController } from "../controller";
 import { userSchema } from "../schema";
 import { checkValidRequest, checkValidUser } from "../helpers/auth";
+import { IServerController } from "interfaces";
 
-async function userRouter(fastify: FastifyInstance) {
+async function userRouter(fastify: IServerController) {
   fastify.decorateRequest("authUser", "");
 
-  const userController = new UserController();
+  const userController = fastify.userController
+
   // Route to get all users
 
   fastify.route({

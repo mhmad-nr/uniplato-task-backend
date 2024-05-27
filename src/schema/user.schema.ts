@@ -1,12 +1,15 @@
 import { Type } from "@sinclair/typebox";
- export const user = Type.Object({
+export const user = Type.Object({
   id: Type.Number(),
   username: Type.String(),
   email: Type.String({
     format: "email",
   }),
   created_at: Type.String(),
-});
+},
+  {
+    additionalProperties: false,
+  });
 
 const updateUserName = {
   body: Type.Object(
@@ -53,7 +56,11 @@ const users = {
     ),
     sortBy: Type.Optional(Type.String({ enum: ["username", "created_at"] })),
     sortOrder: Type.Optional(Type.String({ enum: ["asc", "desc"] })),
-  }),
+
+  },
+    {
+      additionalProperties: false,
+    }),
   response: {
     "200": Type.Object({
       data: Type.Array(user),

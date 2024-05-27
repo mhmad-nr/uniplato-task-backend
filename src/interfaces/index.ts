@@ -1,8 +1,11 @@
-import { FastifyRequest } from "fastify";
+import { FastifyInstance, FastifyRequest } from "fastify";
 import { Prisma, User } from "@prisma/client";
+import { AuthController, UserController } from "controller";
+
 
 export interface IUserRequest extends FastifyRequest {
-  body: Prisma.UserCreateInput |Prisma.UserUpdateInput;
+  test: any;
+  body: Prisma.UserCreateInput | Prisma.UserUpdateInput;
   authUser: User;
 }
 
@@ -20,6 +23,12 @@ export interface IUserGetRequest extends FastifyRequest {
     sortOrder: "asc" | "desc" | undefined;
   };
 }
+export interface IServerController extends FastifyInstance {
+  test: any;
+  authController: AuthController;
+  userController: UserController;
+}
+
 
 export interface PasswordUpdateRequest extends FastifyRequest {
   body: {

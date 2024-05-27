@@ -6,12 +6,15 @@ import { TypeBoxTypeProvider, TypeBoxValidatorCompiler } from "@fastify/type-pro
 import { isEmail, isStrongPassword } from "class-validator";
 import fastifySwagger from "@fastify/swagger";
 import fastifySwaggerUi from "@fastify/swagger-ui";
+import { AuthController, UserController } from "./controller";
 
 const startServer = async () => {
   try {
     const server = fastify({
       logger: true,
     });
+
+    
     server.setValidatorCompiler(TypeBoxValidatorCompiler);
     FormatRegistry.Set("email", (value) => isEmail(value));
     FormatRegistry.Set("password", (value) => isStrongPassword(value));
@@ -35,7 +38,8 @@ const startServer = async () => {
         return swaggerObject;
       },
     });
-
+    server.decorate("authController", new AuthController());
+    server.decorate("userController", new UserController());
     server.register(authRouter, { prefix: "/api/auth" });
     server.register(userRouter, { prefix: "/api/user" });
 

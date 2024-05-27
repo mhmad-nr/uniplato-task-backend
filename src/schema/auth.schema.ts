@@ -14,12 +14,12 @@ const signup = {
       }),
     },
     {
-      additionalProperties: true,
+      additionalProperties: false,
     }
   ),
   response: {
     "200": Type.Object({
-      token: Type.String(),
+      data: user,
     }),
   },
 };
@@ -60,9 +60,18 @@ const changePassword = {
 
   response: {
     "200": Type.Object({
-      data: user,
+      message: Type.String(),
     }),
   },
 };
 
-export const authSchema = { signup, login, changePassword };
+const logout = {
+  // body: Type.Undefined(),
+  response: {
+    "200": Type.Object({
+      message: Type.String(),
+    }),
+  },
+};
+
+export const authSchema = { signup, logout, login, changePassword };

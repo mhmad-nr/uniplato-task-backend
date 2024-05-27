@@ -1,4 +1,4 @@
-import { FastifyReply } from "fastify";
+import { FastifyReply, FastifyRequest } from "fastify";
 import {
   ILoginRequest,
   IUserRequest,
@@ -9,10 +9,14 @@ import { ERRORS, getError, handleServerError } from "../helpers/errors";
 import { ERROR400, STANDARD } from "../helpers/constants";
 import { plainToInstance } from "class-transformer";
 import { CreateUserDto, UpdateUserDto } from "../dto";
+import { blacklist } from "../helpers/blacklist";
+
+
 export class AuthController {
   async login(request: ILoginRequest, reply: FastifyReply) {
     try {
       const { email, password } = request.body;
+
       const user = await prisma.user.findUnique({ where: { email: email } });
 
       if (!user) {
@@ -31,6 +35,8 @@ export class AuthController {
         token,
       });
     } catch (err) {
+      console.error(err);
+
       handleServerError(reply, err);
     }
   }
@@ -56,10 +62,7 @@ export class AuthController {
         },
       });
 
-      const token = utils.getJWT({ email: createdUser.email });
-      return reply.code(STANDARD.SUCCESS).send({
-        token,
-      });
+      reply.code(STANDARD.SUCCESS).send({ data: createdUser });
     } catch (err) {
       handleServerError(reply, err);
     }
@@ -80,7 +83,8 @@ export class AuthController {
         },
       });
 
-      reply.code(STANDARD.SUCCESS).send({ data: updatedUser });
+
+      reply.code(STANDARD.SUCCESS).send({ message: "your password changed successfully" });
     } catch (err) {
       if (err.code == "P2025") {
         reply
@@ -88,6 +92,17 @@ export class AuthController {
           .send({ error: ERRORS.userNotExists.message });
         return;
       }
+      handleServerError(reply, err);
+    }
+  }
+
+  async logout(request: IUserRequest, reply: FastifyReply) {
+    try {
+      // Assuming you're using a token-based system and storing tokens in a blacklist or similar.
+      const token = request.headers.authorization
+      blacklist.add(token);
+      reply.code(STANDARD.SUCCESS).send({ message: "Logged out successfully" });
+    } catch (err) {
       handleServerError(reply, err);
     }
   }

@@ -15,7 +15,6 @@ services:
     command: >
       sh -c "yarn prisma migrate deploy &&
              yarn run start"
-
   db:
     image: mysql:8.0
     restart: always

@@ -9,7 +9,7 @@ This project is a Fastify-based backend API built with TypeScript. It includes u
 ### Prerequisites
 
 - Node.js (>=14.x)
-- yarn (>=1.x)
+- pnpm (>=1.x)
 
 ### Clone the Repository
 
@@ -21,7 +21,7 @@ cd fastify-typescript-project
 ### Install Dependencies
 
 ```sh
-yarn install
+pnpm install
 ```
 
 ### Setup Environment Variables
@@ -33,26 +33,26 @@ Create a `.env` file in the root of the project and add your environment variabl
 #### Development
 
 ```sh
-yarn run dev
+pnpm run dev
 ```
 
 #### Production
 
 ```sh
-yarn run build
-yarn start
+pnpm run build
+pnpm start
 ```
 
 #### Clean Build Artifacts
 
 ```sh
-yarn run clean
+pnpm run clean
 ```
 
 ### Run Tests
 
 ```sh
-yarn test
+pnpm test
 ```
 
 ## Project Structure

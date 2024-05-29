@@ -1,15 +1,18 @@
 #!/bin/bash
 
 # Clean the previous build
-yarn run clean
+pnpm run clean
 
 # Install dependencies
-yarn install
+pnpm install
+
+# Generate database prisma code
+pnpm run db:gen
 
 # Build the project
-yarn run build
+pnpm run build
 
 # Start the project
-yarn run start
+pnpm run start
 
 echo "Build completed successfully."
